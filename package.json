@@ -1,0 +1,53 @@
+{
+    "name": "template",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "license": "Apache-2.0",
+    "author": {
+        "name": "concertypin",
+        "url": "https://github.com/concertypin"
+    },
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "format": "prettier --write . --cache --list-different",
+        "lint": "pnpm run lint:oxlint --fix && pnpm run lint:eslint --fix",
+        "lint:check": "pnpm run lint:oxlint && pnpm run lint:eslint",
+        "lint:oxlint": "oxlint . --type-aware --type-check --report-unused-disable-directives-severity=error",
+        "lint:eslint": "eslint .",
+        "postinstall": "pnpm exec simple-git-hooks",
+        "preview": "vite preview",
+        "pre-commit": "pnpm run format && pnpm run lint && git add -u",
+        "test": "vitest run"
+    },
+    "engines": {
+        "node": ">=20"
+    },
+    "dependencies": {
+        "tailwindcss": "^4.1.18"
+    },
+    "devDependencies": {
+        "@eslint/js": "^10.0.1",
+        "@tailwindcss/postcss": "^4.1.18",
+        "@types/node": "^25.2.3",
+        "@vitest/browser-playwright": "^4.0.18",
+        "@vitest/coverage-v8": "^4.0.18",
+        "cross-env": "^10.1.0",
+        "eslint": "^10.0.0",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-plugin-oxlint": "^1.46.0",
+        "globals": "^17.3.0",
+        "oxlint": "^1.47.0",
+        "oxlint-tsgolint": "^0.12.1",
+        "playwright": "^1.58.2",
+        "postcss": "^8.5.6",
+        "prettier": "^3.8.1",
+        "simple-git-hooks": "^2.13.1",
+        "typescript": "~5.9.3",
+        "typescript-eslint": "^8.55.0",
+        "vite": "^7.3.1",
+        "vitest": "^4.0.18"
+    },
+    "packageManager": "pnpm@10.17.1+sha512.17c560fca4867ae9473a3899ad84a88334914f379be46d455cbf92e5cf4b39d34985d452d2583baf19967fa76cb5c17bc9e245529d0b98745721aa7200ecaf7a"
+}
