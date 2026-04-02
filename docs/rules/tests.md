@@ -1,6 +1,7 @@
 ## 0. General Guidelines
 
 Tests should follow general TypeScript guidelines. Tests should cover:
+
 - Normal behavior
 - Edge cases
 - Invalid input

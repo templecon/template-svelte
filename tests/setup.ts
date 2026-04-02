@@ -1,15 +1,4 @@
-// oxlint-disable-next-line unicorn/no-empty-file
+// Initialize vitest-browser-svelte to expose `render`/`cleanup` helpers
+if (import.meta.env.VITEST_BROWSER) await import("vitest-browser-svelte");
 
-// Keep it light for test setups,
-// Since all tests will slow down if this file is heavy.
-
-/*
-// Demo code
-import { beforeEach, vi } from "vitest";
-beforeEach(() => {
-    const superDuperMockingLibrary = vi.fn(() => {
-        throw new Error("Do cool stuff!");
-    });
-    superDuperMockingLibrary.mockClear();
-});
-*/
+// Keep this file minimal — heavy setup slows tests. Add mocks/helpers here as needed.

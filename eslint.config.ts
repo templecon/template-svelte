@@ -1,96 +1,98 @@
-// @ts-check
 import js from "@eslint/js";
-import tseslint from "typescript-eslint";
-import oxlint from "eslint-plugin-oxlint";
+import ts from "typescript-eslint";
+import svelte from "eslint-plugin-svelte";
+import globals from "globals";
 import { defineConfig } from "eslint/config";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+import oxlint from "eslint-plugin-oxlint";
 
-const useEslint: EslintLevel = "off";
+import svelteConfig from "./svelte.config.js";
 
-type EslintLevel = "off" | "no-type-check" | "all";
-let config: ReturnType<typeof defineConfig> | undefined;
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const isCI = process.env.CI ? true : false;
 
-// Just a type assertion to make it not only single literal type, but also a union of string literals
-// So that we can use it in if statements and get proper type narrowing.
-const eslintLevel: EslintLevel = useEslint satisfies EslintLevel as EslintLevel;
-if (eslintLevel === "off") {
-    config = defineConfig(
-        // Base config to disable all rules
-        {
-            ignores: [
-                "**/node_modules/**",
-                "**/dist/**",
-                "**/dist-ts/**",
-                "**/coverage/**",
-                "**/.cache/**",
-                "**/.vscode/**",
-                "**/.git/**",
-                "src/",
-            ],
-        },
-        {
-            rules: {},
-        }
-    );
-} else {
-    const tsConfig = () => {
-        switch (eslintLevel) {
-            case "no-type-check":
-                return [
-                    tseslint.configs.recommended,
-                    {
-                        languageOptions: {
-                            parserOptions: {
-                                projectService: false,
-                            },
-                        },
-                    },
-                ];
-            case "all":
-                return [
-                    tseslint.configs.recommendedTypeChecked,
-                    {
-                        languageOptions: {
-                            parserOptions: {
-                                projectService: true,
-                            },
-                        },
-                    },
-                ];
-            default:
-                eslintLevel satisfies never;
-                return [];
-        }
-    };
+const oxlintize = true;
 
-    config = defineConfig(
-        // Global ignores
-        {
-            ignores: [
-                "**/node_modules/**",
-                "**/dist/**",
-                "**/dist-ts/**",
-                "**/coverage/**",
-                "**/.cache/**",
-                "**/.vscode/**",
-                "**/.git/**",
-            ],
-        },
-        // Base JavaScript config
-        js.configs.recommended,
-        ...tsConfig(),
-        // Override for .d.ts files
-        {
-            files: ["**/*.d.ts"],
-            rules: {
-                "@typescript-eslint/no-unused-vars": "off",
+export default defineConfig([
+    {
+        ignores: ["dist/", "node_modules/", "*.config.*", "coverage/"],
+    },
+    {
+        files: ["**/*.svelte", "**/*.svelte.ts"],
+        extends: [
+            js.configs.recommended,
+            ...ts.configs.recommendedTypeChecked,
+            ...svelte.configs["flat/recommended"],
+        ],
+        languageOptions: {
+            globals: {
+                ...globals.browser,
+            },
+            parserOptions: {
+                projectService: true,
+                tsconfigRootDir: __dirname,
+                extraFileExtensions: [".svelte"],
             },
         },
-        ...oxlint.buildFromOxlintConfigFile(".oxlintrc.json", {
-            typeAware: true,
-        })
-    );
-}
+    },
 
-config satisfies ReturnType<typeof defineConfig>;
+    {
+        files: ["**/*.svelte", "**/*.svelte.ts"],
+        languageOptions: {
+            parserOptions: {
+                parser: ts.parser,
+                svelteConfig: svelteConfig,
+            },
+        },
+    },
+    {
+        files: ["**/*.svelte", "**/*.svelte.ts"],
+        rules: {
+            // Disable slow & conflicting rule.
+            "svelte/require-store-reactive-access": "off",
+            "no-restricted-syntax": [
+                "error",
+                {
+                    selector:
+                        "CallExpression[callee.name=/^(writable|readable)$/]",
+                    message:
+                        "Direct use of 'writable' or 'readable' is discouraged in Svelte 5. You should use Runes instead.",
+                },
+            ],
+            "svelte/block-lang": ["error", { script: "ts" }],
+        },
+    },
+    {
+        files: ["**/*.svelte", "**/*.svelte.ts"],
+        rules: {
+            // Allow unused vars prefixed with _
+            "@typescript-eslint/no-unused-vars": [
+                "warn",
+                { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
+            ],
+            // Allow empty interfaces for placeholders
+            "@typescript-eslint/no-empty-object-type": "off",
+            // Disable require-await - adapter pattern uses async for interface compatibility
+            "@typescript-eslint/require-await": "off",
+            // Disable unbound-method - false positives with Svelte stores
+            "@typescript-eslint/unbound-method": "off",
+            "svelte/no-useless-children-snippet": "warn",
+            "no-debugger": isCI ? "error" : "warn",
+            // Use dedicated logger. Console is unrecommended since it's not pretty
+            "no-console": "warn",
+        },
+    },
 
-export default config;
+    // Disable ESLint rules that are already handled by oxlint
+    ...(oxlintize
+        ? oxlint
+              .buildFromOxlintConfigFile(".oxlintrc.json", {
+                  typeAware: true,
+              })
+              .map((config) => ({
+                  ...config,
+                  files: ["**/*.svelte", "**/*.svelte.ts"],
+              }))
+        : []),
+]);

@@ -3,6 +3,7 @@
 import { type UserConfig, defineConfig } from "vite";
 import { fileURLToPath } from "node:url";
 import { playwright } from "@vitest/browser-playwright";
+import { svelte } from "@sveltejs/vite-plugin-svelte";
 
 type Config = Required<UserConfig>;
 const resolve: Config["resolve"] = {
@@ -28,10 +29,12 @@ const browserTestConfig = {
     ],
     provider: playwright(),
 } satisfies Config["test"]["browser"];
+
 const testConfig: Config["test"] = {
     coverage: {
         enabled: true,
-        include: ["src/**/*.ts"],
+        include: ["src/**/*.ts", "src/**/*.svelte"],
+        exclude: ["**/*.d.ts"],
         provider: "v8",
         reportOnFailure: true,
         reporter: ["text", "json-summary", "html"],
@@ -46,6 +49,9 @@ const testConfig: Config["test"] = {
             test: {
                 browser: browserTestConfig,
                 name: "browser",
+                env: {
+                    VITEST_BROWSER: "1",
+                },
             },
         },
         {
@@ -67,7 +73,7 @@ export default defineConfig({
         sourcemap: true,
     },
     clearScreen: false,
-    plugins: [],
+    plugins: [svelte()],
     resolve,
     server: {
         open: "index.html",

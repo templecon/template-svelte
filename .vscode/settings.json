@@ -1,11 +1,7 @@
 {
-    "[javascript]": {
+    "[javascript][typescript]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode",
-        "editor.tabSize": 4,
-    },
-    "[typescript]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode",
-        "editor.tabSize": 4,
+        "editor.tabSize": 4
     },
     "[json]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -14,12 +10,15 @@
     "[css]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
-    "typescript.preferences.preferTypeOnlyAutoImports": true,
+    "js/ts.preferences.preferTypeOnlyAutoImports": true,
     "oxc.typeAware": true,
     "prettier.requireConfig": true,
     "files.exclude": {
         // Generated d.ts, which is not useful since all tsconfig emits there.
         "dist-ts": true,
         "coverage": true
-    }
+    },
+    "eslint.validate": ["javascript", "typescript", "svelte"],
+    "svelte.enable-ts-plugin": true,
+    "svelte.plugin.svelte.defaultScriptLanguage": "ts"
 }

@@ -1,10 +1,20 @@
 import { describe, expect, it } from "vitest";
+import { render } from "vitest-browser-svelte";
+import SnippetExample from "@/lib/SnippetExample.svelte";
 
-describe("example browser test", () => {
-    it.concurrent("should run in browser environment", () => {
-        // Localstorage is only available in browser environment,
-        // Not in node.
-        // If this test runs successfully, the browser environment works.
+describe("browser environment test", () => {
+    it("should run in browser environment", () => {
+        // Localstorage is only available in browser environment
         expect(localStorage).not.toBeNull();
+    });
+
+    it("should access window object in browser", () => {
+        expect(window).toBeDefined();
+        expect(document).toBeDefined();
+    });
+
+    it("should render SnippetExample component", async () => {
+        const screen = await render(SnippetExample);
+        expect(screen).toBeTruthy();
     });
 });

@@ -7,7 +7,7 @@
         // Working, but unrecommended patterns.
         "@typescript-eslint/ban-ts-comment": "warn",
         "@typescript-eslint/no-duplicate-type-constituents": "warn",
-        "@typescript-eslint/no-empty-object-type": "warn",
+        "@typescript-eslint/no-empty-object-type": "off",
         "@typescript-eslint/no-explicit-any": "warn",
         "@typescript-eslint/no-extra-non-null-assertion": "warn",
         "@typescript-eslint/no-namespace": "warn",
@@ -20,9 +20,10 @@
         "@typescript-eslint/prefer-as-const": "warn",
         "@typescript-eslint/prefer-namespace-keyword": "warn",
         "@typescript-eslint/prefer-promise-reject-errors": "warn",
-        "@typescript-eslint/require-await": "warn",
+        "@typescript-eslint/require-await": "off",
         "@typescript-eslint/restrict-template-expressions": "warn",
         "@typescript-eslint/triple-slash-reference": "warn",
+        "@typescript-eslint/unbound-method": "off",
         "no-case-declarations": "warn",
         "no-constant-condition": "warn",
         "no-control-regex": "warn",
@@ -66,7 +67,6 @@
         "no-sequences": "warn",
         "no-useless-concat": "warn",
         "no-useless-rename": "warn",
-        "prefer-template": "warn",
-        "object-shorthand": "warn"
+        "prefer-template": "warn"
     }
 }
