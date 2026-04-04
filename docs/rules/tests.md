@@ -39,51 +39,40 @@ describe("User List", () => {
 });
 ```
 
-## 2. Browser Tests (Playwright)
+## 2. Browser Tests (Vitest Browser + Svelte)
 
-Use these for testing DOM manipulation and browser-only APIs. These tests run in a real browser, allowing you to test layout, real event bubbling, and browser-only APIs (like `IntersectionObserver`).
+Use these for testing Svelte components and browser-only APIs. These tests run in a real browser (via Playwright), allowing you to test layout, real event bubbling, and component lifecycle in a native environment.
 
 ### Guidelines:
 
 - File Extension: Use `.test.ts`.
 - Location: `tests/browser/` directory.
-- Tooling: Use `@vitest/browser-playwright` with `page` from `@vitest/browser/context` for interactions.
-- Concurrency: Use `it.concurrent` carefully. Browser tests may have shared state.
-- A11y First: When using helpers returned by `page` object, prioritize `getByRole` above all else.
-    - ❌ Avoid: `getByLabelText`, `getByText` (Use only as a last resort).
-    - ✅ Prefer: `getByRole("button", { name: "Save" })` (Explicit selection based on Accessibility Tree).
-- Upgrade Selectors: Even if user's provided example uses simple selectors, you must upgrade them to Accessibility (Role) based selectors in your final code.
+- Tooling: Use `render` from `vitest-browser-svelte` to mount components.
+- Locators: Use `screen` methods returned by `render` for robust selection.
+- A11y First: Prioritize `getByRole` for locating interactive elements.
+    - ✅ Prefer: `screen.getByRole("button", { name: "Save" })`
+    - ❌ Avoid: `screen.getByTestId`, use only as a last resort for non-semantic elements.
 
 ```typescript
-// button.ts (The Component)
-export function createButton(text: string): HTMLButtonElement {
-    const btn = document.createElement("button");
-    btn.textContent = text;
-    return btn;
-}
-
-// button.test.ts (The Test)
+// Counter.test.ts (Svelte Component Test)
 import { describe, it, expect } from "vitest";
-import { page } from "@vitest/browser/context";
-import { createButton } from "./button";
+import { render } from "vitest-browser-svelte";
+import Counter from "@/lib/Counter.svelte";
 
-describe("Button Component", () => {
-    it.concurrent("should render and handle clicks", async () => {
-        // 1. Render component
-        const btn = createButton("Click Me");
-        document.body.appendChild(btn);
+describe("Counter Component", () => {
+    it("should increment count on click", async () => {
+        // 1. Render component with props
+        const screen = render(Counter, { props: { initialCount: 0 } });
 
         // 2. Locate using ARIA roles (best practice)
-        const button = page.getByRole("button", { name: /click me/i });
+        const btn = screen.getByRole("button", { name: /increment/i });
+        const display = screen.getByText(/count is 0/i);
 
-        // 3. Assert visibility and state
-        await expect.element(button).toBeVisible();
+        // 3. Perform real browser interaction
+        await btn.click();
 
-        // 4. Perform real browser interaction
-        await button.click();
-
-        // 5. Assert result
-        await expect.element(button).toHaveTextContent("Clicked");
+        // 4. Assert updated state
+        await expect.element(display).toHaveTextContent("Count is 1");
     });
 });
 ```

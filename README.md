@@ -1,10 +1,10 @@
 > [!NOTE]
-> This is template repository for website projects, and not a library. Check out [library template](https://github.com/templecon/template-typescript-vite).
+> This is a **Svelte 5** template repository for website projects, and not a library. Check out the [library template](https://github.com/templecon/template-typescript-vite) for library development.
 
 # How to use
 
-```
-git clone https://github.com/templecon/template-typescript-vite-web
+```bash
+git clone https://github.com/templecon/template-svelte
 ```
 
 ## Requirements

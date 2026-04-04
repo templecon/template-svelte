@@ -5,7 +5,7 @@ All agents, such as Claude Code, should keep `**/AGENTS.md` in mind.
 
 ## Project Type
 
-This is a **vanilla TypeScript web application template** (not a library) built with Vite. It uses direct DOM manipulation without any framework like React or Vue.
+This is a **Svelte 5 web application template** (not a library) built with Vite. It uses the new **Runes** system for reactivity ($state, $derived, $props, etc.) and emphasizes modern Svelte patterns.
 
 ## Development Commands
 
@@ -31,9 +31,9 @@ pnpm test
 
 ## Architecture
 
-- **Entry point**: `src/main.ts` - Initializes the application and renders to the `#app` div in `index.html`
+- **Entry point**: `src/main.ts` - Initializes the application and mounts the `App.svelte` component to the `#app` div in `index.html`
+- **Svelte 5 Runes**: Entire reactive logic follows Svelte 5 runes (`$state`, `$derived`, `$props`, `$effect`).
 - **ES modules** throughout (`"type": "module"` in package.json)
-- **Direct DOM manipulation** using standard browser APIs
 - **Static assets**: Place in `public/` directory
 
 ## Coding Standards
