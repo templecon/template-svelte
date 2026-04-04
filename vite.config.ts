@@ -75,8 +75,5 @@ export default defineConfig({
     clearScreen: false,
     plugins: [svelte()],
     resolve,
-    server: {
-        open: "index.html",
-    },
     test: testConfig,
 });

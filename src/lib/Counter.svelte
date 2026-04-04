@@ -5,12 +5,10 @@
     }
     const { initialCount = 0, onCountChange }: CounterProps = $props();
 
-    let count = $derived(0);
-    const resetValue = $derived(initialCount);
-
-    $effect.pre(() => {
-        count = initialCount;
-    });
+    // svelte-ignore state_referenced_locally
+    let count = $state(initialCount);
+    // svelte-ignore state_referenced_locally
+    const resetValue = initialCount;
 
     function increment() {
         count++;
