@@ -4,6 +4,7 @@ import { type UserConfig, defineConfig } from "vite";
 import { fileURLToPath } from "node:url";
 import { playwright } from "@vitest/browser-playwright";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
+import { VitePWA } from "vite-plugin-pwa";
 
 type Config = Required<UserConfig>;
 const resolve: Config["resolve"] = {
@@ -73,7 +74,35 @@ export default defineConfig({
         sourcemap: true,
     },
     clearScreen: false,
-    plugins: [svelte()],
+    plugins: [
+        svelte(),
+        VitePWA({
+            registerType: "autoUpdate",
+            manifest: {
+                name: "NovelAI Image Client",
+                short_name: "NAI Client",
+                description: "A mobile-first NovelAI image generation client",
+                theme_color: "#ffffff",
+                display: "standalone",
+                orientation: "portrait",
+                icons: [
+                    {
+                        src: "pwa-192x192.png",
+                        sizes: "192x192",
+                        type: "image/png",
+                    },
+                    {
+                        src: "pwa-512x512.png",
+                        sizes: "512x512",
+                        type: "image/png",
+                    },
+                ],
+            },
+            workbox: {
+                globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
+            },
+        }),
+    ],
     resolve,
     test: testConfig,
 });
