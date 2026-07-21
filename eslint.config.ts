@@ -8,15 +8,41 @@ import { fileURLToPath } from "url";
 import oxlint from "eslint-plugin-oxlint";
 
 import svelteConfig from "./svelte.config.js";
+import oxlintConfig from "./oxlint.config.ts";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const isCI = process.env.CI ? true : false;
 
+type OxlintEslintConfig = Parameters<typeof oxlint.buildFromOxlintConfig>[0];
+
+const isOxlintEslintConfig = (value: unknown): value is OxlintEslintConfig =>
+    typeof value === "object" && value !== null;
+
 const oxlintize = true;
+const oxlintEslintConfigs =
+    oxlintize && isOxlintEslintConfig(oxlintConfig)
+        ? oxlint
+              .buildFromOxlintConfig(oxlintConfig, {
+                  typeAware: true,
+              })
+              .map((config) => ({
+                  ...config,
+                  files: ["**/*.svelte", "**/*.svelte.ts"],
+              }))
+        : [];
 
 export default defineConfig([
     {
-        ignores: ["dist/", "node_modules/", "*.config.*", "coverage/"],
+        ignores: [
+            "dist/",
+            "node_modules/",
+            "*.config.*",
+            "coverage/",
+            ".svelte-check/",
+            ".vscode/",
+            ".cache/",
+            ".git/",
+        ],
     },
     {
         files: ["**/*.svelte", "**/*.svelte.ts"],
@@ -79,20 +105,10 @@ export default defineConfig([
             "@typescript-eslint/unbound-method": "off",
             "svelte/no-useless-children-snippet": "warn",
             "no-debugger": isCI ? "error" : "warn",
-            // Use dedicated logger. Console is unrecommended since it's not pretty
             "no-console": "warn",
         },
     },
 
     // Disable ESLint rules that are already handled by oxlint
-    ...(oxlintize
-        ? oxlint
-              .buildFromOxlintConfigFile(".oxlintrc.json", {
-                  typeAware: true,
-              })
-              .map((config) => ({
-                  ...config,
-                  files: ["**/*.svelte", "**/*.svelte.ts"],
-              }))
-        : []),
+    ...oxlintEslintConfigs,
 ]);

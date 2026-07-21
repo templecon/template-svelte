@@ -5,3 +5,7 @@ node_modules
 
 pnpm-lock.yaml
 **/__screenshots__
+LICENSE
+.svelte-check
+coverage
+.vitest-attachments

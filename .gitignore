@@ -143,6 +143,7 @@ dist-ts
 
 # SvelteKit build / generate output
 .svelte-kit
+.svelte-check
 
 ### VisualStudioCode ###
 .vscode/*
