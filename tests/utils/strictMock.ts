@@ -11,14 +11,19 @@ import { expect, type Mocked } from "vitest";
 export function strictObject<const Target extends object>(
     obj: NoInfer<Partial<Target>>
 ): Target {
-    return new Proxy<Target>(obj as unknown as Target, {
+    return new Proxy<Target>(obj as Target, {
         get(target: Target, prop, receiver) {
             if (prop in target) {
                 return Reflect.get(target, prop, receiver);
             }
-            // Allow 'then' property access for proper Promise/await behavior
-            // JavaScript checks for 'then' to determine if an object is thenable
-            if (prop === "then") {
+            // Allow 'then' property access for proper Promise/await behavior.
+            // Also allow common inspection properties like 'asymmetricMatch' (used by Vitest matchers)
+            // and 'toJSON' (used by serialization/logging libraries) to avoid false positives.
+            if (
+                prop === "then" ||
+                prop === "asymmetricMatch" ||
+                prop === "toJSON"
+            ) {
                 return undefined;
             }
             // Symbol properties (e.g., Symbol.iterator, Symbol.toStringTag)

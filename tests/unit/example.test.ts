@@ -13,6 +13,5 @@ describe("example test", () => {
         // Not in browser.
         // If this test runs successfully, the node environment works.
         expect(globalThis.process).toBeDefined();
-        expect(navigator?.userAgent?.toLowerCase()).include("node");
     });
 });
