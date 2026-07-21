@@ -24,7 +24,7 @@
         "test": "vitest run"
     },
     "engines": {
-        "node": ">=20"
+        "node": ">=24"
     },
     "dependencies": {
         "phosphor-svelte": "^3.1.0",
