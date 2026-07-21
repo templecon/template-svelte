@@ -16,7 +16,8 @@
     "files.exclude": {
         // Generated d.ts, which is not useful since all tsconfig emits there.
         "dist-ts": true,
-        "coverage": true
+        "coverage": true,
+        ".svelte-check": true
     },
     "eslint.validate": ["javascript", "typescript", "svelte"],
     "svelte.enable-ts-plugin": true,

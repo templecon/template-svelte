@@ -6,7 +6,6 @@
  * Don't have to be run on scripts or CI, but you can run it if you have lots of curiosity.
  */
 
-// oxlint-disable no-console
 import { spawnSync } from "child_process";
 import { performance } from "perf_hooks";
 
@@ -80,8 +79,8 @@ function getCleanedStats(data: number[]): { mean: number; stdev: number } {
     const sortedData = [...data].sort((a, b) => a - b);
     const n = sortedData.length;
 
-    const q1 = sortedData[Math.floor(n / 4)];
-    const q3 = sortedData[Math.floor((3 * n) / 4)];
+    const q1 = sortedData[Math.floor(n / 4)]!;
+    const q3 = sortedData[Math.floor((3 * n) / 4)]!;
     const iqr = q3 - q1;
 
     const lowerBound = q1 - 1.5 * iqr;

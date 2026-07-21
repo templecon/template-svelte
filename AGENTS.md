@@ -52,6 +52,19 @@ See `docs/rules/` for TypeScript, testing, and tooling guidelines.
 - Custom styles in `src/style.css` for layout and theming
 - PostCSS configured in `postcss.config.mjs`
 
+## Template Placeholders and Pre-deployment Checklist
+
+This repository is a reusable template. Before deploying an application created from it:
+
+- Replace the Vite defaults in `index.html`: the language, favicon, page title, and any metadata.
+- Replace the demo UI and example handlers in `src/App.svelte` and `src/lib/` with application-specific screens and behavior.
+- Review `package.json` and replace the template name, version, author, and repository metadata as needed.
+- Review `src/style.css` and remove starter styles that are not used by the application.
+- Remove `AGENTS.md` (and nested `AGENTS.md` files) from the generated application if AI-agent guidance is not part of the project workflow. If they are kept, update them to describe the real project rather than this template.
+- Configure deployment-specific environment variables, domains, analytics, error reporting, security headers, and secrets before publishing. Never commit secrets.
+
+The files and sections listed above are intentional starter placeholders, not production-ready application content.
+
 ## Package Manager
 
 This project uses **pnpm**.
