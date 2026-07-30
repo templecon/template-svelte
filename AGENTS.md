@@ -55,3 +55,13 @@ See `docs/rules/` for TypeScript, testing, and tooling guidelines.
 ## Package Manager
 
 This project uses **pnpm**.
+
+## Using This Template
+
+Immediately after creating a project from this template, upgrade all dependencies and refresh the lockfile:
+
+```bash
+pnpm up --latest
+```
+
+Run the project's format, lint, test, and build checks after the upgrade and resolve every resulting error before continuing development.
