@@ -18,7 +18,7 @@
         "lint:eslint": "eslint .",
         "postinstall": "pnpm exec simple-git-hooks",
         "preview": "vite preview",
-        "pre-commit": "pnpm run format && pnpm run lint && pnpm run test && git add -u",
+        "check": "pnpm run format && pnpm run lint && pnpm run test",
         "test": "vitest run"
     },
     "engines": {
