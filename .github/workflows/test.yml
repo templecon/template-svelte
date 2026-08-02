@@ -20,34 +20,13 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v5
-        with:
-          run_install: false
+        uses: pnpm/action-setup@v6
 
       - name: Install node
         uses: actions/setup-node@v4
         with:
           node-version-file: package.json
-
-      - name: Ready for cache
-        id: ready-cache
-        run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_OUTPUT
-
-      - name: Get cache (Leader)
-        if: ${{ matrix.shardIndex == 1 }}
-        uses: actions/cache@v5
-        with:
-          path: ${{ steps.ready-cache.outputs.STORE_PATH }}
-          key: pnpm-deps-cache-${{ hashFiles('**/pnpm-lock.yaml') }}
-
-      - name: Get cache (Follower)
-        if: ${{ matrix.shardIndex != 1 }}
-        uses: actions/cache/restore@v5
-        with:
-          path: ${{ steps.ready-cache.outputs.STORE_PATH }}
-          key: pnpm-deps-cache-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            pnpm-deps-cache-
+          cache: pnpm
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -78,9 +57,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v5
-        with:
-          run_install: false
+        uses: pnpm/action-setup@v6
 
       - name: Install node
         uses: actions/setup-node@v4
