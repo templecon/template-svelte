@@ -1,10 +1,12 @@
+// @vitest-environment jsdom
+
 import { describe, expect, it } from "vitest";
-import { render } from "vitest-browser-svelte";
+import { render } from "@testing-library/svelte";
 import SnippetExample from "@/lib/SnippetExample.svelte";
 
 describe("browser environment test", () => {
     it("should run in browser environment", () => {
-        // Localstorage is only available in browser environment
+        // localStorage is only available in DOM environment
         expect(localStorage).not.toBeNull();
     });
 
@@ -13,8 +15,8 @@ describe("browser environment test", () => {
         expect(document).toBeDefined();
     });
 
-    it("should render SnippetExample component", async () => {
-        const screen = await render(SnippetExample);
-        expect(screen).toBeTruthy();
+    it("should render SnippetExample component", () => {
+        const { container } = render(SnippetExample);
+        expect(container.querySelector(".snippet")).toBeInTheDocument();
     });
 });

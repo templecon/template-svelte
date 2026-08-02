@@ -4,17 +4,12 @@
 # How to use
 
 ```bash
-git clone https://github.com/templecon/template-svelte
+git clone <repository-url> template-svelte
 ```
 
 ## Requirements
 
-Node.js version 22.18.0 or higher is recommended, since it has basic TypeScript support, which is used on eslint.config.ts.
-Older versions will:
-
-- Older than v22.6.0: Not work, migrate Node version or eslint.config.ts to .js.
-- Between v22.6.0 and v22.18.0: Work, but require `--experimental-transform-types`(since v22.7.0) or `--experimental-strip-types`(since v22.6.0) flag on `NODE_OPTIONS` environment variable.
-- v22.18.0 or higher: Work without flags.
+Node.js 24 or higher is required. The templates run TypeScript configuration and hooks directly with Node's built-in type stripping.
 
 ## Conventions and Rules
 
@@ -23,3 +18,23 @@ This project follows specific conventions and rules for code style, data validat
 - [Typescript](./docs/rules/typescript.md)
 - [Typescript Schema Validation](./docs/rules/typescript_schema.md)
 - [Testing Guidelines](./docs/rules/tests.md)
+
+---
+
+## Static Hosting
+
+Deploy the `dist/` output over HTTP(S), such as GitHub Pages or `pnpm preview`.
+This template is a single-page Svelte 5 demo without a router. The build emits
+the same app from two Vite inputs, `index.html` and `404.html`. GitHub Pages
+serves the app-bearing `404.html` for a refresh or direct visit to any URL that
+does not map to a static file, so the demo loads on deep links and refreshes
+under the repository base path.
+
+GitHub Pages fallback responses retain an HTTP 404 status even though the app
+renders. This can affect SEO, crawlers, and link previews.
+
+**Routing limitation:** every URL renders the same demo content; there are no
+client-side routes or per-route views. Add a Svelte 5 router and per-route
+pages once the project grows.
+
+`file://` viewing is unsupported.
