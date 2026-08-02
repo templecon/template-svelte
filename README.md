@@ -32,17 +32,14 @@ This project follows specific conventions and rules for code style, data validat
 ## Static Hosting
 
 Deploy the `dist/` output over HTTP(S), such as GitHub Pages or `pnpm preview`.
-This template is a single-page Svelte 5 demo without a router. The build emits
-the same app from two Vite inputs, `index.html` and `404.html`. GitHub Pages
-serves the app-bearing `404.html` for a refresh or direct visit to any URL that
-does not map to a static file, so the demo loads on deep links and refreshes
-under the repository base path.
+This template uses `svelte5-router` with History API routes for `/` and
+`/about`, plus an application-level fallback for unknown paths. The build emits
+the same application shell from two Vite inputs, `index.html` and `404.html`.
+GitHub Pages serves the app-bearing `404.html` for a refresh or direct visit to
+a URL that does not map to a static file, so the router can render the matching
+view under the repository base path.
 
-GitHub Pages fallback responses retain an HTTP 404 status even though the app
-renders. This can affect SEO, crawlers, and link previews.
-
-**Routing limitation:** every URL renders the same demo content; there are no
-client-side routes or per-route views. Add a Svelte 5 router and per-route
-pages once the project grows.
+GitHub Pages fallback responses retain an HTTP 404 status even when the client
+router renders a known route. This can affect SEO, crawlers, and link previews.
 
 `file://` viewing is unsupported.
