@@ -14,7 +14,7 @@ for those fallback responses, which can affect SEO, crawlers, and link previews.
 
 Install dependencies with `pnpm install`. To update dependencies after creating
 a project, run `pnpm up --latest`, review the manifest and lockfile changes,
-then run `pnpm run check` before committing them.
+then run `pnpm run check && pnpm build` before committing them.
 
 ## Commands
 
