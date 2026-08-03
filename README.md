@@ -31,13 +31,17 @@ This project follows specific conventions and rules for code style, data validat
 
 ## Static Hosting
 
-Deploy the `dist/` output over HTTP(S), such as GitHub Pages or `pnpm preview`.
+`pnpm build` uses relative asset URLs and supports root hosting. For a site
+mounted below the domain root, build with its absolute base path; for example,
+`pnpm build --base "/<repo>/"` for a GitHub Pages project site. The included
+deployment workflow supplies this repository base automatically.
+
 This template uses `svelte5-router` with History API routes for `/` and
 `/about`, plus an application-level fallback for unknown paths. The build emits
 the same application shell from two Vite inputs, `index.html` and `404.html`.
 GitHub Pages serves the app-bearing `404.html` for a refresh or direct visit to
 a URL that does not map to a static file, so the router can render the matching
-view under the repository base path.
+view under the configured base path.
 
 GitHub Pages fallback responses retain an HTTP 404 status even when the client
 router renders a known route. This can affect SEO, crawlers, and link previews.
