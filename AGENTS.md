@@ -10,6 +10,12 @@ URL that does not map to a static file. GitHub Pages keeps an HTTP 404 status
 for those fallback responses, which can affect SEO, crawlers, and link previews.
 `file://` viewing is unsupported.
 
+## Using this template
+
+Install dependencies with `pnpm install`. To update dependencies after creating
+a project, run `pnpm up --latest`, review the manifest and lockfile changes,
+then run `pnpm run check` before committing them.
+
 ## Commands
 
 ```bash
