@@ -9,7 +9,7 @@ git clone <repository-url> template-svelte
 
 ## Requirements
 
-Node.js 24 or higher is required. The templates run TypeScript configuration and hooks directly with Node's built-in type stripping.
+Node.js 26 or higher is required. The templates run TypeScript configuration and hooks directly with Node's built-in type stripping.
 
 ## Conventions and Rules
 

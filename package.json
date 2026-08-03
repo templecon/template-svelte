@@ -22,7 +22,7 @@
         "test": "vitest run"
     },
     "engines": {
-        "node": ">=24"
+        "node": ">=26"
     },
     "dependencies": {
         "svelte": "^5.55.1",
