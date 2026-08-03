@@ -1,34 +1,16 @@
 /// <reference types="vitest/config" />
 
-import { type UserConfig, defineConfig } from "vite";
+import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { playwright } from "@vitest/browser-playwright";
+import { type UserConfig, defineConfig } from "vite";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
-
 type Config = Required<UserConfig>;
-const resolve: Config["resolve"] = {
+const resolveAlias: Config["resolve"] = {
     alias: {
         "@": fileURLToPath(new URL("src", import.meta.url)),
     },
+    conditions: ["module", "import", "browser", "default"],
 };
-
-const browserInclude = ["**/tests/browser/**/*.test.ts"];
-const browserTestConfig = {
-    enabled: true,
-    headless: true,
-    instances: [
-        {
-            browser: "chromium",
-            expect: {
-                poll: {
-                    timeout: 5000,
-                },
-            },
-            include: browserInclude,
-        },
-    ],
-    provider: playwright(),
-} satisfies Config["test"]["browser"];
 
 const testConfig: Config["test"] = {
     coverage: {
@@ -43,37 +25,26 @@ const testConfig: Config["test"] = {
     exclude: ["**/node_modules/**", "**/dist/**"],
     globals: true,
     include: ["tests/**/*.test.ts"],
-    projects: [
-        {
-            extends: true,
-            test: {
-                browser: browserTestConfig,
-                name: "browser",
-                env: {
-                    VITEST_BROWSER: "1",
-                },
-            },
-        },
-        {
-            extends: true,
-            test: {
-                browser: {
-                    enabled: false,
-                },
-                exclude: browserInclude,
-                name: "node",
-            },
-        },
-    ],
     setupFiles: "./tests/setup.ts",
 };
+
 export default defineConfig({
+    base: "/",
     build: {
         outDir: "dist",
+        rolldownOptions: {
+            input: {
+                main: resolve(import.meta.dirname, "index.html"),
+                notFound: resolve(import.meta.dirname, "404.html"),
+            },
+        },
         sourcemap: true,
     },
     clearScreen: false,
     plugins: [svelte()],
-    resolve,
+    resolve: resolveAlias,
+    server: {
+        open: "/",
+    },
     test: testConfig,
 });

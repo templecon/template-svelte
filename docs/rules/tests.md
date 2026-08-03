@@ -39,45 +39,41 @@ describe("User List", () => {
 });
 ```
 
-## 2. Browser Tests (Vitest Browser + Svelte)
+## 2. Browser Tests (DOM Environment)
 
-Use these for testing Svelte components and browser-only APIs. These tests run in a real browser (via Playwright), allowing you to test layout, real event bubbling, and component lifecycle in a native environment.
+Use these for testing Svelte components and browser-only APIs. These tests run in a jsdom environment, allowing you to test component rendering, event handling, and DOM interactions without a real browser.
 
 ### Guidelines:
 
 - File Extension: Use `.test.ts`.
 - Location: `tests/browser/` directory.
-- Tooling: Use `render` from `vitest-browser-svelte` to mount components.
-- Locators: Use `screen` methods returned by `render` for robust selection.
+- Tooling: Use `render` from `@testing-library/svelte` to mount components.
+- Queries: Use `screen` queries from `@testing-library/svelte` for element selection.
 - A11y First: Prioritize `getByRole` for locating interactive elements.
     - ✅ Prefer: `screen.getByRole("button", { name: "Save" })`
     - ❌ Avoid: `screen.getByTestId`, use only as a last resort for non-semantic elements.
+- User Interactions: Use `@testing-library/user-event` for realistic event simulation.
 
 ```typescript
 // Counter.test.ts (Svelte Component Test)
 import { describe, it, expect } from "vitest";
-import { render } from "vitest-browser-svelte";
+import { render, screen } from "@testing-library/svelte";
+import userEvent from "@testing-library/user-event";
 import Counter from "@/lib/Counter.svelte";
 
 describe("Counter Component", () => {
     it("should increment count on click", async () => {
-        // 1. Render component with props
-        const screen = render(Counter, { props: { initialCount: 0 } });
+        const user = userEvent.setup();
+        render(Counter, { initialCount: 0 });
 
         // 2. Locate using ARIA roles (best practice)
         const btn = screen.getByRole("button", { name: /increment/i });
-        const display = screen.getByText(/count is 0/i);
 
-        // 3. Perform real browser interaction
-        await btn.click();
+        // 3. Perform realistic user interaction
+        await user.click(btn);
 
         // 4. Assert updated state
-        await expect.element(display).toHaveTextContent("Count is 1");
+        expect(screen.getByText("Count is 1")).toBeInTheDocument();
     });
 });
 ```
-
-## Documentation
-
-- [Vitest docs](https://vitest.dev/guide/)
-- [Playwright docs](https://playwright.dev/docs/intro)

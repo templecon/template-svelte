@@ -9,7 +9,8 @@
         "./*.js",
         "./*.mjs",
         // dotfiles
-        "./.simple-git-hooks.mjs"
+        "./.simple-git-hooks.mjs",
+        "./scripts/check-branch-name.ts"
     ],
     "extends": "./tsconfig.base.json"
 }

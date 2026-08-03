@@ -1,57 +1,49 @@
 # AGENTS.md
 
-This file provides guidance to AI agents when working with code in this repository.
-All agents, such as Claude Code, should keep `**/AGENTS.md` in mind.
+## Project
 
-## Project Type
+This Svelte 5 web template (runes-based, not a library) builds HTTP(S)-hosted
+assets for GitHub Pages. It is a single-page component demo without a router.
+Vite multi-page inputs emit the same app from `index.html` and a SPA-bearing
+custom `404.html`, which GitHub Pages serves for a refresh or direct visit to a
+URL that does not map to a static file. GitHub Pages keeps an HTTP 404 status
+for those fallback responses, which can affect SEO, crawlers, and link previews.
+`file://` viewing is unsupported.
 
-This is a **Svelte 5 web application template** (not a library) built with Vite. It uses the new **Runes** system for reactivity ($state, $derived, $props, etc.) and emphasizes modern Svelte patterns.
+## Using this template
 
-## Development Commands
+Install dependencies with `pnpm install`. To update dependencies after creating
+a project, run `pnpm up --latest`, review the manifest and lockfile changes,
+then run `pnpm run check && pnpm build` before committing them.
+
+## Commands
 
 ```bash
-# Start development server (auto-opens browser to index.html)
 pnpm dev
-
-# Build for production (runs TypeScript compilation, then Vite build)
 pnpm build
-
-# Preview production build locally
 pnpm preview
-
-# Format code
 pnpm format
-
-# Lint code
 pnpm lint
-
-# Run tests (Vitest with Playwright and Node environment)
 pnpm test
+pnpm run check
 ```
 
-## Architecture
+## Important files
 
-- **Entry point**: `src/main.ts` - Initializes the application and mounts the `App.svelte` component to the `#app` div in `index.html`
-- **Svelte 5 Runes**: Entire reactive logic follows Svelte 5 runes (`$state`, `$derived`, `$props`, `$effect`).
-- **ES modules** throughout (`"type": "module"` in package.json)
-- **Static assets**: Place in `public/` directory
+- `src/main.ts`: application entry point that mounts `App.svelte`.
+- `src/App.svelte`: single-page demo layout using Svelte 5 runes.
+- `vite.config.ts`: Vite multi-page HTML inputs (`index.html`, `404.html`) and
+  Vitest configuration.
+- `404.html`: second Vite input emitted to `dist/404.html` as the GitHub Pages
+  SPA fallback.
+- `.github/workflows/deploy.yml`: builds with the configure-pages repository
+  base path and deploys `dist/` to GitHub Pages.
+- `docs/rules/`: TypeScript, schema, and testing guidelines.
+- `tests/browser/`: jsdom Testing Library tests for rendered components.
+- `tests/unit/`: Node-only tests for pure logic.
 
-## Coding Standards
+## Conventions
 
-See `docs/rules/` for TypeScript, testing, and tooling guidelines.
-
-## TypeScript Configuration
-
-- **Path alias**: `@/*` maps to `src/*` (configured in `tsconfig.base.json`)
-- **Project references**: Uses `tsconfig.json` with `app` and `node` references
-- **Strict mode** enabled
-
-## Styling
-
-- **Tailwind CSS v4** with new directive-based syntax: `@import "tailwindcss"`
-- Custom styles in `src/style.css` for layout and theming
-- PostCSS configured in `postcss.config.mjs`
-
-## Package Manager
-
-This project uses **pnpm**.
+- Use TypeScript with Svelte 5 runes (`$state`, `$derived`, `$props`, etc.).
+- Use pnpm and keep `pnpm-lock.yaml` in sync with `package.json`.
+- Run `pnpm run check` after changes that affect source, tests, or configuration.
