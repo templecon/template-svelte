@@ -24,12 +24,40 @@ const testConfig: Config["test"] = {
     environment: "node",
     exclude: ["**/node_modules/**", "**/dist/**"],
     globals: true,
-    include: ["tests/**/*.test.ts"],
-    setupFiles: "./tests/setup.ts",
+    projects: [
+        {
+            extends: true,
+            test: {
+                environment: "node",
+                include: ["tests/unit/**/*.test.ts"],
+                name: "node",
+                env: {
+                    VITEST_MODE: "node",
+                },
+            },
+        },
+        {
+            extends: true,
+            test: {
+                environment: "jsdom",
+                environmentOptions: {
+                    jsdom: {
+                        url: "http://localhost/",
+                    },
+                },
+                include: ["tests/browser/**/*.test.ts"],
+                name: "browser",
+                setupFiles: ["tests/setup.ts"],
+                env: {
+                    VITEST_MODE: "browser",
+                },
+            },
+        },
+    ],
 };
 
 export default defineConfig({
-    base: "/",
+    base: "./",
     build: {
         outDir: "dist",
         rolldownOptions: {

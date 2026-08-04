@@ -7,10 +7,7 @@ interface ViteTypeOptions {
 }
 
 interface ImportMetaEnv {
-    /**
-     * VITE_SOMETHING_COOL_ENV will be available in your code as
-     * import.meta.env.VITE_SOMETHING_COOL_ENV
-     */
+    VITEST_MODE?: "node" | "browser";
 }
 
 interface ImportMeta {

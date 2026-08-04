@@ -26,9 +26,8 @@ But doesn't support:
 
 When using new plugins, including ESLint's plugins, you should try oxlint's [ESLint compatibility](https://oxc.rs/docs/guide/usage/linter/js-plugins.html) first.
 
-- Make a config on `scripts/linter/` directory about the plugin.
-- Write the rules you want to use in the config. Since oxlint doesn't support `.configs.recommended` or something like that, you should write the rules you want to use in the config. Maybe checking the plugin's code to find out which rules are enabled in the recommended config is helpful.
-- Modify `scripts/linter/oxlint-eslint.json` to extend the config you made.
+- Add the plugin-specific rules to `oxlint.config.ts`.
+- Extend or override the shared configuration there.
 
 ### ESLint
 

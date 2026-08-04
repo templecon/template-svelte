@@ -55,25 +55,22 @@ Use these for testing Svelte components and browser-only APIs. These tests run i
 - User Interactions: Use `@testing-library/user-event` for realistic event simulation.
 
 ```typescript
-// Counter.test.ts (Svelte Component Test)
-import { describe, it, expect } from "vitest";
+// routes.test.ts (Svelte route test)
+import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/svelte";
 import userEvent from "@testing-library/user-event";
-import Counter from "@/lib/Counter.svelte";
+import App from "@/App.svelte";
 
-describe("Counter Component", () => {
-    it("should increment count on click", async () => {
+describe("application routes", () => {
+    it("navigates to the about route", async () => {
         const user = userEvent.setup();
-        render(Counter, { initialCount: 0 });
+        render(App);
 
-        // 2. Locate using ARIA roles (best practice)
-        const btn = screen.getByRole("button", { name: /increment/i });
+        await user.click(screen.getByRole("link", { name: "About" }));
 
-        // 3. Perform realistic user interaction
-        await user.click(btn);
-
-        // 4. Assert updated state
-        expect(screen.getByText("Count is 1")).toBeInTheDocument();
+        expect(
+            await screen.findByRole("heading", { name: "About this template" })
+        ).toBeInTheDocument();
     });
 });
 ```
