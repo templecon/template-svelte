@@ -45,4 +45,4 @@ But super-slow. ESLint should be used only for:
 
 ## Formatter Configuration
 
-This project uses Prettier for formatting, since it's not super-fast but still acceptable for formatting.
+This project uses Oxfmt for formatting.
