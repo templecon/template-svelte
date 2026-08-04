@@ -31,10 +31,13 @@ This project follows specific conventions and rules for code style, data validat
 
 ## Static Hosting
 
-`pnpm build` uses relative asset URLs and supports root hosting. For a site
-mounted below the domain root, build with its absolute base path; for example,
-`pnpm build --base "/<repo>/"` for a GitHub Pages project site. The included
-deployment workflow supplies this repository base automatically.
+`pnpm build` emits relative asset URLs, so the generated `dist/` can be served
+from the domain root or a subpath such as a GitHub Pages project site
+(`https://<user>.github.io/<repo>/`). For History API routing below the domain
+root, build with the site's absolute base path, for example
+`pnpm build --base "/<repo>/"`, so the router links and the `404.html` fallback
+shell resolve against the real mount path. The included deployment workflow
+supplies this repository base automatically.
 
 This template uses `svelte5-router` with History API routes for `/` and
 `/about`, plus an application-level fallback for unknown paths. The build emits
