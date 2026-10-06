@@ -1,7 +1,10 @@
 import frontendConfig from "@concertypin/config/oxlint/frontend";
 import { defineConfig } from "oxlint";
 
+const frontend = frontendConfig("src/style.css");
+
 export default defineConfig({
+    ...frontend,
     $schema: "./node_modules/oxlint/configuration_schema.json",
     plugins: ["typescript", "unicorn", "import", "vitest", "promise"],
     env: {
@@ -23,6 +26,7 @@ export default defineConfig({
         typeCheck: true,
     },
     overrides: [
+        ...(frontend.overrides ?? []),
         {
             files: ["**/*.svelte"],
             rules: {
@@ -31,5 +35,4 @@ export default defineConfig({
             },
         },
     ],
-    extends: [frontendConfig],
 });

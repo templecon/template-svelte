@@ -2,8 +2,9 @@
 
 import { cleanup, render, screen } from "@testing-library/svelte";
 import userEvent from "@testing-library/user-event";
-import { afterEach, describe, expect, it } from "vitest";
 import { navigate } from "svelte5-router";
+import { afterEach, describe, expect, it } from "vitest";
+
 import App from "@/App.svelte";
 
 afterEach(() => {
