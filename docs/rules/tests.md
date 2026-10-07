@@ -28,6 +28,7 @@ export async function fetchUserList(): Promise<User[]> {
 
 // utils.test.ts (The Test)
 import { describe, it, expect, expectTypeOf } from "vitest";
+
 import { fetchUserList } from "./utils";
 
 describe("User List", () => {
@@ -55,10 +56,11 @@ Use these for testing Svelte components and browser-only APIs. These tests run i
 - User Interactions: Use `@testing-library/user-event` for realistic event simulation.
 
 ```typescript
-// routes.test.ts (Svelte route test)
-import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/svelte";
 import userEvent from "@testing-library/user-event";
+// routes.test.ts (Svelte route test)
+import { describe, expect, it } from "vitest";
+
 import App from "@/App.svelte";
 
 describe("application routes", () => {

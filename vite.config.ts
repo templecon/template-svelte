@@ -2,8 +2,9 @@
 
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { type UserConfig, defineConfig } from "vite";
+
 import { svelte } from "@sveltejs/vite-plugin-svelte";
+import { type UserConfig, defineConfig } from "vite";
 type Config = Required<UserConfig>;
 const resolveAlias: Config["resolve"] = {
     alias: {

@@ -1,5 +1,4 @@
+import frontend from "@concertypin/config/oxfmt/frontend";
 import { defineConfig } from "oxfmt";
 
-import base from "@concertypin/config/oxfmt";
-
-export default defineConfig(base);
+export default defineConfig(frontend());

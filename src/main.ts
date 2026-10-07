@@ -1,7 +1,8 @@
 /* v8 ignore file -- @preserve */
 import "@/style.css";
-import App from "@/App.svelte";
 import { mount } from "svelte";
+
+import App from "@/App.svelte";
 
 const target = document.getElementById("app");
 if (!target) {
