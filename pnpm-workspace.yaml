@@ -1,3 +1,5 @@
+allowBuilds:
+  simple-git-hooks: true
 minimumReleaseAge: 1440
 minimumReleaseAgeExclude:
   - '@concertypin/*'
