@@ -1,11 +1,10 @@
-import frontendConfig from "@concertypin/config/oxlint/frontend";
+import createFrontendOxlintConfig from "@concertypin/config/oxlint/frontend";
 import { defineConfig } from "oxlint";
 
-const frontend = frontendConfig("src/style.css");
+const frontend = createFrontendOxlintConfig("src/style.css");
 
 export default defineConfig({
-    ...frontend,
-    $schema: "./node_modules/oxlint/configuration_schema.json",
+    jsPlugins: ["oxlint-tailwindcss"],
     plugins: ["typescript", "unicorn", "import", "vitest", "promise"],
     env: {
         builtin: true,
@@ -25,8 +24,8 @@ export default defineConfig({
         typeAware: true,
         typeCheck: true,
     },
+    settings: { tailwindcss: { entryPoint: "src/style.css" } },
     overrides: [
-        ...(frontend.overrides ?? []),
         {
             files: ["**/*.svelte"],
             rules: {
@@ -35,4 +34,5 @@ export default defineConfig({
             },
         },
     ],
+    extends: [frontend],
 });
