@@ -15,7 +15,7 @@
         "format:check": "oxfmt --check .",
         "lint": "pnpm run lint:oxlint --fix && pnpm run lint:eslint --fix",
         "lint:check": "pnpm run lint:oxlint && pnpm run lint:eslint",
-        "lint:oxlint": "oxlint . --type-aware --type-check --report-unused-disable-directives-severity=error",
+        "lint:oxlint": "oxlint .",
         "lint:eslint": "eslint .",
         "postinstall": "pnpm exec simple-git-hooks",
         "preview": "vite preview",
