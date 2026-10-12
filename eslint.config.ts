@@ -17,40 +17,55 @@ const isCI = process.env.CI ? true : false;
 
 /**
  * Rules ESLint keeps even where Oxlint runs a rule of the same name, because
- * the meaning differs: Oxlint's no-unused-vars ignores values used only as
- * types (`reportVarsOnlyUsedAsTypes` is false by default).
+ * the meaning differs:
+ * - no-unused-vars: Oxlint ignores values used only as types
+ *   (`reportVarsOnlyUsedAsTypes` is false by default).
+ * - no-global-assign: ESLint knows browser globals (`globals.browser`), while
+ *   Oxlint's `env` only has `builtin`.
+ * - no-irregular-whitespace: Oxlint skips template literals, regular
+ *   expressions, and JSX text by default; ESLint checks them.
  */
 const keptInEslint = new Set([
     "no-unused-vars",
     "@typescript-eslint/no-unused-vars",
+    "no-global-assign",
+    "no-irregular-whitespace",
 ]);
 
-/** True for a rule entry that turns the rule off ("off", 0, or ["off", ...]). */
+/** True for a rule entry Oxlint treats as off ("off", "allow", 0, or an array starting with one). */
 const isOff = (entry: unknown): boolean => {
     const severity: unknown = Array.isArray(entry)
         ? (entry as unknown[])[0]
         : entry;
-    return severity === "off" || severity === 0;
+    return severity === "off" || severity === "allow" || severity === 0;
 };
 
 /**
  * The part of an Oxlint config read below. oxlint's exported override and
- * rule-map types are too large for the type checker to resolve, so the
- * configs are viewed through this shape once, here.
+ * rule-map types are too large for the type checker to resolve, so configs
+ * are read through this smaller shape.
  */
 type OverrideScope = {
+    extends?: OverrideScope[];
     overrides?: { files: string[]; rules?: Record<string, unknown> }[];
 };
-const oxlintScopes = [
-    oxlintConfig,
-    ...(oxlintConfig.extends ?? []),
-] as unknown as OverrideScope[];
+
+/** A config and everything it extends, at any depth. */
+const withExtends = (config: OverrideScope): OverrideScope[] => [
+    config,
+    ...(config.extends ?? []).flatMap(withExtends),
+];
+const oxlintScopes = withExtends(oxlintConfig);
 
 /**
  * Patterns from every git ignore file Oxlint honours (each .gitignore, at any
  * depth, and .git/info/exclude), rewritten for a config-level `ignores`.
  * - includeIgnoreFile writes patterns as if the file sat at the config root,
- *   so a nested file's directory is prefixed (negations keep their `!`).
+ *   so a nested file's directory is prefixed.
+ * - Negations (`!pattern`) are dropped. In one flat `ignores` list they would
+ *   also cancel unrelated exclusions (Oxlint's ignorePatterns, overrides), and
+ *   git's precedence across files cannot be flattened. Dropping them only
+ *   keeps more files in ESLint, never fewer.
  * - A pattern like `**\/.svelte-kit` matches the directory only as a path in a
  *   config-level `ignores`, so a `/**` variant reaches the files inside.
  * The global core.excludesFile is not read: Oxlint does not honour it either.
@@ -68,15 +83,14 @@ const gitIgnored = [
         ? dirname(ignoreFile).replaceAll("\\", "/")
         : ".";
     const prefix = directory === "." ? "" : `${directory}/`;
-    return (
-        includeIgnoreFile(join(__dirname, ignoreFile)).ignores ?? []
-    ).flatMap((pattern) => {
-        const negated = pattern.startsWith("!");
-        const scoped = `${negated ? "!" : ""}${prefix}${pattern.replace(/^!/u, "")}`;
-        return scoped.endsWith("/**")
-            ? [scoped]
-            : [scoped, `${scoped.replace(/\/$/u, "")}/**`];
-    });
+    return (includeIgnoreFile(join(__dirname, ignoreFile)).ignores ?? [])
+        .filter((pattern) => !pattern.startsWith("!"))
+        .flatMap((pattern) => {
+            const scoped = `${prefix}${pattern}`;
+            return scoped.endsWith("/**")
+                ? [scoped]
+                : [scoped, `${scoped.replace(/\/$/u, "")}/**`];
+        });
 });
 
 /**
