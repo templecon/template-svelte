@@ -177,8 +177,8 @@ importers:
         version: 4.3.3
     devDependencies:
       '@concertypin/config':
-        specifier: ^0.4.0
-        version: 0.4.0(oxfmt@0.72.0(svelte@5.57.1(@typescript-eslint/types@8.71.1)))(oxlint@1.87.0(oxlint-tsgolint@7.0.2003))
+        specifier: ^0.5.0
+        version: 0.5.0(oxfmt@0.72.0(svelte@5.57.1(@typescript-eslint/types@8.71.1)))(oxlint-tsgolint@7.0.2003)(oxlint@1.87.0(oxlint-tsgolint@7.0.2003))
       '@eslint/js':
         specifier: ^10.0.1
         version: 10.0.1(eslint@10.12.0(jiti@2.7.0))
@@ -305,12 +305,16 @@ packages:
   '@cacheable/utils@2.5.0':
     resolution: {integrity: sha512-buipgOVDkkPXNR5+xBpDw7Zk2n1EvU7qBJCNUcL7rhQ//kfpOXPAvQ511Os0vpLYJ1pZnvudNytkQt2hst3wqA==}
 
-  '@concertypin/config@0.4.0':
-    resolution: {integrity: sha512-BlRhQv1qRHIxF0uYkT+8IMP/DlO2HiuVpEeXRdm1ADUSfVA502vbzzWUt+I91/LyB0fGHMf8xlCe8RrPWlbj2w==}
-    engines: {node: '>=24.11.0'}
+  '@concertypin/config@0.5.0':
+    resolution: {integrity: sha512-VV9rvZDGOnXZ7Ma8CveC3uP6Ipng3JCMpBiubCF4QyslY7/D5/98HRd2USxgJujBv7xph17mMBty9q4lBnD2ww==}
+    engines: {node: '>=26'}
     peerDependencies:
       oxfmt: '>=0.62.0 <1'
-      oxlint: '>=1.47.0 <2'
+      oxlint: '>=1.87.0 <2'
+      oxlint-tsgolint: 7.0.2003
+    peerDependenciesMeta:
+      oxlint-tsgolint:
+        optional: true
 
   '@csstools/color-helpers@6.1.2':
     resolution: {integrity: sha512-grhRy3OKmniaAEKXMjua5z/EODX0MSqBGjunw8+j/3HQjOnahs2AGhvEOIYVUWcU6ScApbhLhVrQTX8XqrMrow==}
@@ -2053,10 +2057,12 @@ snapshots:
       hashery: 1.5.1
       keyv: 5.6.0
 
-  '@concertypin/config@0.4.0(oxfmt@0.72.0(svelte@5.57.1(@typescript-eslint/types@8.71.1)))(oxlint@1.87.0(oxlint-tsgolint@7.0.2003))':
+  '@concertypin/config@0.5.0(oxfmt@0.72.0(svelte@5.57.1(@typescript-eslint/types@8.71.1)))(oxlint-tsgolint@7.0.2003)(oxlint@1.87.0(oxlint-tsgolint@7.0.2003))':
     dependencies:
       oxfmt: 0.72.0(svelte@5.57.1(@typescript-eslint/types@8.71.1))
       oxlint: 1.87.0(oxlint-tsgolint@7.0.2003)
+    optionalDependencies:
+      oxlint-tsgolint: 7.0.2003
 
   '@csstools/color-helpers@6.1.2': {}
 

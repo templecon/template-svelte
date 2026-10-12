@@ -15,8 +15,8 @@
         "format:check": "oxfmt --check .",
         "lint": "pnpm run lint:oxlint --fix && pnpm run lint:eslint --fix",
         "lint:check": "pnpm run lint:oxlint && pnpm run lint:eslint",
-        "lint:oxlint": "oxlint . --type-aware --type-check --report-unused-disable-directives-severity=error",
-        "lint:eslint": "eslint .",
+        "lint:oxlint": "oxlint .",
+        "lint:eslint": "eslint . --max-warnings 0",
         "postinstall": "pnpm exec simple-git-hooks",
         "preview": "vite preview",
         "check": "pnpm run format && pnpm run lint && pnpm run test",
@@ -31,7 +31,7 @@
         "tailwindcss": "^4.3.3"
     },
     "devDependencies": {
-        "@concertypin/config": "^0.4.0",
+        "@concertypin/config": "^0.5.0",
         "@eslint/js": "^10.0.1",
         "@sveltejs/vite-plugin-svelte": "^7.3.1",
         "@tailwindcss/postcss": "^4.3.3",
